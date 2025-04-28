@@ -4,7 +4,7 @@ let supabase = null;
 function initializeSupabase() {
     const supabaseUrl = 'https://doqdmloolofjntckomar.supabase.co'; // Replace with your API URL
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvcWRtbG9vbG9mam50Y2tvbWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4NTkxMTUsImV4cCI6MjA2MTQzNTExNX0.UWjotozpwacn2u_OKvzSAGLkKYq0q7eyJPGEFq8Ih8s'; // Replace with your Anon Public Key
-
+  
 
   if (window.supabase && typeof window.supabase.createClient === 'function') {
     supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
@@ -29,7 +29,7 @@ async function signInWithGoogle() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin // Ensure redirect back to the app
+        redirectTo: window.location.origin
       }
     });
     if (error) {
@@ -37,6 +37,19 @@ async function signInWithGoogle() {
       alert('Login failed: ' + error.message);
     } else {
       console.log('Login initiated:', data);
+      // Update UI after successful login
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError || !userData?.user) return;
+
+      const user = userData.user;
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('repsSection').style.display = 'block';
+      loadReps();
+      // Set profile picture
+      if (user.user_metadata && user.user_metadata.avatar_url) {
+        document.querySelector('.profile-icon').style.backgroundImage = `url(${user.user_metadata.avatar_url})`;
+        document.querySelector('.profile-icon').style.backgroundSize = 'cover';
+      }
     }
   } catch (err) {
     console.error('Unexpected error during sign-in:', err);
@@ -97,6 +110,12 @@ async function loadReps() {
     document.getElementById('squats').innerText = data.squats + " Reps";
     document.getElementById('situps').innerText = data.situps + " Reps";
   }
+
+  // Set profile picture on page load
+  if (user.user_metadata && user.user_metadata.avatar_url) {
+    document.querySelector('.profile-icon').style.backgroundImage = `url(${user.user_metadata.avatar_url})`;
+    document.querySelector('.profile-icon').style.backgroundSize = 'cover';
+  }
 }
 
 function setTodayDate() {
@@ -109,7 +128,19 @@ function setTodayDate() {
   document.getElementById('today-date').innerText = `Today (${formattedDate})`;
 }
 
-// Only set the date on page load; session check moved to after sign-in
-window.onload = () => {
+// Check session on page load and update UI
+window.onload = async () => {
   setTodayDate();
+  if (supabase) {
+    const { data: userData, error } = await supabase.auth.getUser();
+    if (error) {
+      console.error('Error checking user session:', error);
+      return;
+    }
+    if (userData?.user) {
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('repsSection').style.display = 'block';
+      loadReps();
+    }
+  }
 };
