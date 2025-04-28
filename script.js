@@ -2,9 +2,8 @@
 let supabase = null;
 
 function initializeSupabase() {
-    const supabaseUrl = 'https://doqdmloolofjntckomar.supabase.co'; // Replace with your API URL
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvcWRtbG9vbG9mam50Y2tvbWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4NTkxMTUsImV4cCI6MjA2MTQzNTExNX0.UWjotozpwacn2u_OKvzSAGLkKYq0q7eyJPGEFq8Ih8s'; // Replace with your Anon Public Key
-  
+  const supabaseUrl = 'https://doqdmloolofjntckomar.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvcWRtbG9vbG9mam50Y2tvbWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4NTkxMTUsImV4cCI6MjA2MTQzNTExNX0.UWjotozpwacn2u_OKvzSAGLkKYq0q7eyJPGEFq8Ih8s';
 
   if (window.supabase && typeof window.supabase.createClient === 'function') {
     supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
@@ -95,20 +94,29 @@ async function loadReps() {
   if (userError || !userData?.user) return;
 
   const user = userData.user;
-  const today = new Date().toISOString().split('T')[0];
   const { data, error } = await supabase
     .from('reps')
     .select('*')
     .eq('user_id', user.id)
-    .eq('date', today)
-    .single();
+    .order('created_at', { ascending: false })
+    .limit(1);
 
-  if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found
+  if (error) {
     console.error('Error loading:', error);
-  } else if (data) {
-    document.getElementById('pushups').innerText = data.pushups + " Reps";
-    document.getElementById('squats').innerText = data.squats + " Reps";
-    document.getElementById('situps').innerText = data.situps + " Reps";
+    return;
+  }
+
+  if (data && data.length > 0) {
+    const latestEntry = data[0];
+    document.getElementById('pushups').innerText = latestEntry.pushups + " Reps";
+    document.getElementById('squats').innerText = latestEntry.squats + " Reps";
+    document.getElementById('situps').innerText = latestEntry.situps + " Reps";
+    // Update the date display with the latest entry's date
+    document.getElementById('today-date').innerText = `Last Updated (${new Date(latestEntry.date).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    }).split('/').join('-')})`;
   }
 
   // Set profile picture on page load
