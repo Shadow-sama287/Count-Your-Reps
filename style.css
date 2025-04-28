@@ -122,10 +122,10 @@ button:hover {
   background-color: #4db6ac;
 }
 
-/* Media Query for Mobile Screens (below 768px) */
+/* Media Query for Mobile Screens (below 767px) */
 @media (max-width: 767px) {
   .container {
-    padding-top: 10px; /* Reduced padding to move heading higher */
+    padding-top: 10px; /* Keeps heading higher */
   }
 
   header h1 {
@@ -138,16 +138,16 @@ button:hover {
   }
 
   .today {
-    margin: 30px 0 40px 0; /* Increased bottom margin for more space between date and cards */
+    margin: 30px 0 40px 0; /* Maintains space between date and cards */
     font-size: 18px;
   }
 
   .reps {
     flex-direction: column;
-    gap: 20px;
+    gap: 30px; /* Increased from 20px to 30px for more breathing space */
     width: 90%;
     max-width: 600px;
-    align-items: flex-start; /* Left-align cards */
+    align-items: center; /* Centers the cards */
   }
 
   .card {
