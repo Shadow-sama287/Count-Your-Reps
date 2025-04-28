@@ -6,24 +6,31 @@ body {
   font-family: "Montserrat", sans-serif;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .container {
   width: 90%;
   max-width: 1200px;
   margin: auto;
-  padding-top: 40px;
+  padding-top: 20px;
 }
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  width: 90%;
+  max-width: 1200px;
 }
 
 header h1 {
   font-family: "Quantico", sans-serif;
-  font-size: 48px;
+  font-size: 36px;
   margin: 0;
 }
 
@@ -39,17 +46,17 @@ header h1 {
 
 #login {
   text-align: center;
-  margin: 40px 0;
+  margin: 20px 0;
 }
 
 #login button {
-  padding: 12px 24px;
+  padding: 10px 20px;
   background-color: #26a69a;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   transition: background-color 0.3s;
 }
 
@@ -58,59 +65,120 @@ header h1 {
 }
 
 .today {
-  margin: 40px 0;
-  font-size: 24px;
+  margin: 20px 0;
+  font-size: 18px;
   text-align: center;
 }
 
 .reps {
   display: flex;
-  gap: 30px;
-  flex-wrap: nowrap;
-  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  width: 90%;
+  max-width: 600px;
+  align-items: center;
 }
 
 .card {
   background-color: #1e1e1e;
   border-radius: 10px;
-  padding: 30px;
-  width: 300px;
+  padding: 20px;
+  width: 100%;
+  max-width: 300px;
   text-align: center;
 }
 
 .card h2 {
   text-align: left;
-  font-size: 24px;
-  margin: 0 0 10px;
+  font-size: 20px;
+  margin: 0 0 8px;
 }
 
 .card p {
   font-family: "Goldman", sans-serif;
-  font-size: 36px;
-  margin: 10px 0;
+  font-size: 28px;
+  margin: 8px 0;
 }
 
 input {
   width: 80%;
-  padding: 8px;
-  margin-top: 10px;
+  padding: 6px;
+  margin-top: 8px;
   background-color: #333;
   color: #fff;
   border: none;
   border-radius: 5px;
+  font-size: 14px;
 }
 
 button {
-  margin-top: 15px;
-  padding: 10px 20px;
+  margin-top: 10px;
+  padding: 8px 16px;
   background-color: #26a69a;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  font-size: 14px;
 }
 
 button:hover {
   background-color: #4db6ac;
+}
+
+/* Media Query for Tablets and Larger Screens */
+@media (min-width: 768px) {
+  .container {
+    padding-top: 40px;
+  }
+
+  header h1 {
+    font-size: 48px;
+  }
+
+  #login button {
+    padding: 12px 24px;
+    font-size: 16px;
+  }
+
+  .today {
+    margin: 40px 0;
+    font-size: 24px;
+  }
+
+  .reps {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 30px;
+    width: auto;
+  }
+
+  .card {
+    padding: 30px;
+    width: 300px;
+  }
+
+  .card h2 {
+    font-size: 24px;
+    margin: 0 0 10px;
+  }
+
+  .card p {
+    font-size: 36px;
+    margin: 10px 0;
+  }
+
+  input {
+    padding: 8px;
+    margin-top: 10px;
+    font-size: 16px;
+  }
+
+  button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+  }
 }
