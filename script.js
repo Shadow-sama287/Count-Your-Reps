@@ -1,10 +1,10 @@
-
+// Global variables
 let supabase = null;
 
 function initializeSupabase() {
     const supabaseUrl = 'https://doqdmloolofjntckomar.supabase.co'; // Replace with your API URL
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvcWRtbG9vbG9mam50Y2tvbWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4NTkxMTUsImV4cCI6MjA2MTQzNTExNX0.UWjotozpwacn2u_OKvzSAGLkKYq0q7eyJPGEFq8Ih8s'; // Replace with your Anon Public Key
-    
+
 
   if (window.supabase && typeof window.supabase.createClient === 'function') {
     supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
@@ -109,15 +109,7 @@ function setTodayDate() {
   document.getElementById('today-date').innerText = `Today (${formattedDate})`;
 }
 
-// Check user session on page load
-window.onload = async () => {
+// Only set the date on page load; session check moved to after sign-in
+window.onload = () => {
   setTodayDate();
-  if (supabase) {
-    const { data: userData } = await supabase.auth.getUser();
-    if (userData?.user) {
-      document.getElementById('login').style.display = 'none';
-      document.getElementById('repsSection').style.display = 'block';
-      loadReps();
-    }
-  }
 };
