@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Count Your Reps</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>CountYourReps</h1>
+        <div class="profile-icon"></div>
+      </header>
+
+      <div id="login">
+        <button onclick="signInWithGoogle()">Sign In with Google</button>
+      </div>
+
+      <div id="repsSection" style="display: none">
+        <div class="today">
+          <p id="today-date">Today (DD-MM-YYYY)</p>
+        </div>
+
+        <div class="reps">
+          <div class="card">
+            <h2>Push Ups</h2>
+            <p id="pushups">0 Reps</p>
+            <input type="number" id="pushups-input" placeholder="Enter Reps" />
+            <button onclick="updateReps('pushups')">Save</button>
+          </div>
+
+          <div class="card">
+            <h2>Squats</h2>
+            <p id="squats">0 Reps</p>
+            <input type="number" id="squats-input" placeholder="Enter Reps" />
+            <button onclick="updateReps('squats')">Save</button>
+          </div>
+
+          <div class="card">
+            <h2>SitUps</h2>
+            <p id="situps">0 Reps</p>
+            <input type="number" id="situps-input" placeholder="Enter Reps" />
+            <button onclick="updateReps('situps')">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,113 @@
+@import url("https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Montserrat:ital,wght@1,100..900&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+
+body {
+  background-color: #121212;
+  color: #ffffff;
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  padding-top: 40px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  font-family: "Quantico", sans-serif;
+  font-size: 48px;
+  margin: 0;
+}
+
+.profile-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #333;
+  border-radius: 50%;
+}
+
+#login {
+  text-align: center;
+  margin: 40px 0;
+}
+
+#login button {
+  padding: 12px 24px;
+  background-color: #26a69a;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+#login button:hover {
+  background-color: #4db6ac;
+}
+
+.today {
+  margin: 40px 0;
+  font-size: 24px;
+  text-align: center;
+}
+
+.reps {
+  display: flex;
+  gap: 30px;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.card {
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  padding: 30px;
+  width: 300px;
+  text-align: center;
+}
+
+.card h2 {
+  text-align: left;
+  font-size: 24px;
+  margin: 0 0 10px;
+}
+
+.card p {
+  font-family: "Goldman", sans-serif;
+  font-size: 36px;
+  margin: 10px 0;
+}
+
+input {
+  width: 80%;
+  padding: 8px;
+  margin-top: 10px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #26a69a;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #4db6ac;
+}
