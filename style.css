@@ -71,6 +71,7 @@ header h1 {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
 
 #date-picker {
@@ -85,6 +86,15 @@ header h1 {
 #date-picker::-webkit-calendar-picker-indicator {
   filter: invert(1); /* Makes the calendar icon white */
   cursor: pointer;
+}
+
+.view-only {
+  display: none; /* Initially hidden */
+  font-size: 16px;
+  color: #888;
+  margin-top: 5px;
+  width: 100%; /* Ensure it takes full width for centering */
+  text-align: center;
 }
 
 .reps {
@@ -157,6 +167,11 @@ button:hover {
   .today {
     margin: 30px 0 40px 0;
     font-size: 18px;
+  }
+
+  .view-only {
+    font-size: 14px;
+    margin-top: 3px;
   }
 
   .reps {

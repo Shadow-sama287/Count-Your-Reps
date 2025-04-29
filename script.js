@@ -110,7 +110,25 @@ async function loadRepsForDate() {
     return;
   }
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+  const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+  const formattedDate = new Date(selectedDate).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  }).split('/').join('-');
+
+  let dateLabel = `(${formattedDate})`;
+  if (selectedDate === todayStr) {
+    dateLabel = `Today (${formattedDate})`;
+  } else if (selectedDate === yesterdayStr) {
+    dateLabel = `Yesterday (${formattedDate})`;
+  }
+
   const saveButtons = [
     document.getElementById('pushups-save'),
     document.getElementById('squats-save'),
@@ -121,34 +139,28 @@ async function loadRepsForDate() {
     document.getElementById('squats-input'),
     document.getElementById('situps-input')
   ];
+  const viewOnlyLabel = document.getElementById('view-only-label');
 
   if (data) {
     document.getElementById('pushups').innerText = data.pushups + " Reps";
     document.getElementById('squats').innerText = data.squats + " Reps";
     document.getElementById('situps').innerText = data.situps + " Reps";
-    document.getElementById('today-date').innerText = `Last Updated (${new Date(selectedDate).toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    }).split('/').join('-')})`;
   } else {
     document.getElementById('pushups').innerText = "0 Reps";
     document.getElementById('squats').innerText = "0 Reps";
     document.getElementById('situps').innerText = "0 Reps";
-    document.getElementById('today-date').innerText = `No Data (${new Date(selectedDate).toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    }).split('/').join('-')})`;
   }
+  document.getElementById('today-date').innerText = dateLabel;
 
-  // Show or hide Save buttons and input fields based on whether the selected date is today
-  if (selectedDate === today) {
+  // Show or hide Save buttons, input fields, and View Only label based on whether the selected date is today
+  if (selectedDate === todayStr) {
     saveButtons.forEach(button => button.style.display = 'block');
     inputFields.forEach(input => input.style.display = 'block');
+    viewOnlyLabel.style.display = 'none';
   } else {
     saveButtons.forEach(button => button.style.display = 'none');
     inputFields.forEach(input => input.style.display = 'none');
+    viewOnlyLabel.style.display = 'block';
   }
 
   if (user.user_metadata && user.user_metadata.avatar_url) {
