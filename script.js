@@ -2,27 +2,19 @@
 let supabase = null;
 let selectedDate = new Date().toISOString().split('T')[0]; // Track the currently selected date
 
-async function initializeSupabase() {
+function initializeSupabase() {
+  const supabaseUrl = 'https://doqdmloolofjntckomar.supabase.co';
+  const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvcWRtbG9vbG9mam50Y2tvbWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4NTkxMTUsImV4cCI6MjA2MTQzNTExNX0.UWjotozpwacn2u_OKvzSAGLkKYq0q7eyJPGEFq8Ih8s';
+
+  if (typeof window.supabase === 'undefined' || !window.supabase.createClient) {
+    console.error('Supabase library not loaded');
+    alert('Error: Supabase library failed to load. Please refresh the page.');
+    return;
+  }
+
   try {
-    const response = await fetch('/api/supabase');
-    if (!response.ok) {
-      throw new Error('Failed to initialize Supabase');
-    }
-    const data = await response.json();
-    console.log(data.message); // Should log "Supabase initialized"
-
-    // Initialize Supabase on the client side using the public anon key
-    const { createClient } = window.supabase;
-    const supabaseUrl = 'https://doqdmloolofjntckomar.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvcWRtbG9vbG9mam50Y2tvbWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4NTkxMTUsImV4cCI6MjA2MTQzNTExNX0.UWjotozpwacn2u_OKvzSAGLkKYq0q7eyJPGEFq8Ih8s';
-    supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-    // If a session was returned, set it
-    if (data.session) {
-      await supabase.auth.setSession(data.session);
-    }
-
-    console.log('Supabase initialized successfully on client');
+    supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+    console.log('Supabase initialized successfully');
   } catch (error) {
     console.error('Error initializing Supabase:', error);
     alert('Error: Supabase initialization failed. Please refresh the page.');
@@ -32,6 +24,7 @@ async function initializeSupabase() {
 // Initialize Supabase when the page loads
 document.addEventListener('DOMContentLoaded', initializeSupabase);
 
+// Existing functions remain unchanged
 async function signInWithGoogle() {
   if (!supabase) {
     console.error('Supabase client not initialized');
