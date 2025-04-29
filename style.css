@@ -6,9 +6,6 @@ body {
   font-family: "Montserrat", sans-serif;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   min-height: 100vh;
 }
 
@@ -26,6 +23,8 @@ header {
   position: relative;
   width: 90%;
   max-width: 1200px;
+  margin: 0 auto; /* Center the header */
+  padding: 20px 0; /* Reduce top padding */
 }
 
 header h1 {
@@ -137,16 +136,17 @@ input[type="number"] {
 button {
   margin-top: 15px;
   padding: 10px 20px;
-  background-color: #26a69a;
-  color: white;
-  border: none;
+  background-color: #1e1e1e; /* Darker shade to match theme */
+  color: #ffffff;
+  border: 1px solid #26a69a; /* Add border for contrast */
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
 button:hover {
-  background-color: #4db6ac;
+  background-color: #333; /* Slightly lighter on hover */
+  border-color: #4db6ac;
 }
 
 /* Media Query for Mobile Screens (below 768px) */
@@ -180,6 +180,7 @@ button:hover {
     width: 90%;
     max-width: 600px;
     align-items: center;
+    margin: 0 auto; /* Center the container */
   }
 
   .card {
