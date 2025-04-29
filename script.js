@@ -11,12 +11,17 @@ async function initializeSupabase() {
     const data = await response.json();
     console.log(data.message); // Should log "Supabase initialized"
 
-    // For now, we'll reinitialize Supabase on the client side
-    // This will be updated later to avoid exposing credentials
+    // Initialize Supabase on the client side using the public anon key
     const { createClient } = window.supabase;
-    const supabaseUrl = 'https://doqdmloolofjntckomar.supabase.co'; // Temporary
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvcWRtbG9vbG9mam50Y2tvbWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4NTkxMTUsImV4cCI6MjA2MTQzNTExNX0.UWjotozpwacn2u_OKvzSAGLkKYq0q7eyJPGEFq8Ih8s'; // Temporary
-    supabase = createClient(supabaseUrl, supabaseKey);
+    const supabaseUrl = 'https://doqdmloolofjntckomar.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvcWRtbG9vbG9mam50Y2tvbWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4NTkxMTUsImV4cCI6MjA2MTQzNTExNX0.UWjotozpwacn2u_OKvzSAGLkKYq0q7eyJPGEFq8Ih8s';
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+    // If a session was returned, set it
+    if (data.session) {
+      await supabase.auth.setSession(data.session);
+    }
+
     console.log('Supabase initialized successfully on client');
   } catch (error) {
     console.error('Error initializing Supabase:', error);
