@@ -116,6 +116,11 @@ async function loadRepsForDate() {
     document.getElementById('squats-save'),
     document.getElementById('situps-save')
   ];
+  const inputFields = [
+    document.getElementById('pushups-input'),
+    document.getElementById('squats-input'),
+    document.getElementById('situps-input')
+  ];
 
   if (data) {
     document.getElementById('pushups').innerText = data.pushups + " Reps";
@@ -137,11 +142,13 @@ async function loadRepsForDate() {
     }).split('/').join('-')})`;
   }
 
-  // Show or hide Save buttons based on whether the selected date is today
+  // Show or hide Save buttons and input fields based on whether the selected date is today
   if (selectedDate === today) {
     saveButtons.forEach(button => button.style.display = 'block');
+    inputFields.forEach(input => input.style.display = 'block');
   } else {
     saveButtons.forEach(button => button.style.display = 'none');
+    inputFields.forEach(input => input.style.display = 'none');
   }
 
   if (user.user_metadata && user.user_metadata.avatar_url) {
