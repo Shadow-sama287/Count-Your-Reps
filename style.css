@@ -38,7 +38,7 @@ header h1 {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #ccc; /* Fallback color */
+  background-color: #ccc;
   background-size: cover;
   background-position: center;
   cursor: pointer;
@@ -68,6 +68,23 @@ header h1 {
   margin: 40px 0;
   font-size: 24px;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#date-picker {
+  margin-left: 10px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 5px;
+}
+
+#date-picker::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Makes the calendar icon white */
+  cursor: pointer;
 }
 
 .reps {
@@ -97,7 +114,7 @@ header h1 {
   margin: 10px 0;
 }
 
-input {
+input[type="number"] {
   width: 80%;
   padding: 8px;
   margin-top: 10px;
@@ -122,10 +139,10 @@ button:hover {
   background-color: #4db6ac;
 }
 
-/* Media Query for Mobile Screens (below 767px) */
+/* Media Query for Mobile Screens (below 768px) */
 @media (max-width: 767px) {
   .container {
-    padding-top: 10px; /* Keeps heading higher */
+    padding-top: 10px;
   }
 
   header h1 {
@@ -138,16 +155,16 @@ button:hover {
   }
 
   .today {
-    margin: 30px 0 40px 0; /* Maintains space between date and cards */
+    margin: 30px 0 40px 0;
     font-size: 18px;
   }
 
   .reps {
     flex-direction: column;
-    gap: 30px; /* Increased from 20px to 30px for more breathing space */
+    gap: 30px;
     width: 90%;
     max-width: 600px;
-    align-items: center; /* Centers the cards */
+    align-items: center;
   }
 
   .card {
@@ -166,7 +183,7 @@ button:hover {
     margin: 8px 0;
   }
 
-  input {
+  input[type="number"] {
     padding: 6px;
     font-size: 14px;
   }

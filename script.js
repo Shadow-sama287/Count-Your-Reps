@@ -1,5 +1,6 @@
 // Global variables
 let supabase = null;
+let selectedDate = new Date().toISOString().split('T')[0]; // Track the currently selected date
 
 function initializeSupabase() {
   const supabaseUrl = 'https://doqdmloolofjntckomar.supabase.co';
@@ -80,52 +81,67 @@ async function updateReps(type) {
     .from('reps')
     .upsert(
       { user_id: user.id, date: today, pushups: parseInt(pushups), squats: parseInt(squats), situps: parseInt(situps) },
-      { onConflict: ['user_id', 'date'] } // Updates existing row or inserts new with 0s if none exists
+      { onConflict: ['user_id', 'date'] }
     );
   if (error) console.error('Error saving:', error);
   else console.log('Saved:', data);
   loadReps(); // Refresh display after saving
 }
 
-async function loadReps() {
+async function loadRepsForDate() {
+  const datePicker = document.getElementById('date-picker');
+  selectedDate = datePicker.value; // Update the selected date
+
   if (!supabase) return;
 
   const { data: userData, error: userError } = await supabase.auth.getUser();
   if (userError || !userData?.user) return;
 
   const user = userData.user;
-  const today = new Date().toISOString().split('T')[0];
   const { data, error } = await supabase
     .from('reps')
     .select('*')
     .eq('user_id', user.id)
-    .eq('date', today)
-    .maybeSingle(); // Use maybeSingle to handle cases where no row exists
+    .eq('date', selectedDate)
+    .maybeSingle();
 
   if (error) {
     console.error('Error loading:', error);
     return;
   }
 
+  const today = new Date().toISOString().split('T')[0];
+  const saveButtons = [
+    document.getElementById('pushups-save'),
+    document.getElementById('squats-save'),
+    document.getElementById('situps-save')
+  ];
+
   if (data) {
     document.getElementById('pushups').innerText = data.pushups + " Reps";
     document.getElementById('squats').innerText = data.squats + " Reps";
     document.getElementById('situps').innerText = data.situps + " Reps";
-    document.getElementById('today-date').innerText = `Last Updated (${new Date(today).toLocaleDateString('en-GB', {
+    document.getElementById('today-date').innerText = `Last Updated (${new Date(selectedDate).toLocaleDateString('en-GB', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
     }).split('/').join('-')})`;
   } else {
-    // If no data exists for today, set to 0 Reps
     document.getElementById('pushups').innerText = "0 Reps";
     document.getElementById('squats').innerText = "0 Reps";
     document.getElementById('situps').innerText = "0 Reps";
-    document.getElementById('today-date').innerText = `Today (${new Date(today).toLocaleDateString('en-GB', {
+    document.getElementById('today-date').innerText = `No Data (${new Date(selectedDate).toLocaleDateString('en-GB', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
     }).split('/').join('-')})`;
+  }
+
+  // Show or hide Save buttons based on whether the selected date is today
+  if (selectedDate === today) {
+    saveButtons.forEach(button => button.style.display = 'block');
+  } else {
+    saveButtons.forEach(button => button.style.display = 'none');
   }
 
   if (user.user_metadata && user.user_metadata.avatar_url) {
@@ -134,14 +150,19 @@ async function loadReps() {
   }
 }
 
+async function loadReps() {
+  await loadRepsForDate(); // Load reps for the initially selected date (today)
+}
+
 function setTodayDate() {
   const today = new Date();
-  const formattedDate = today.toLocaleDateString('en-GB', {
+  const formattedDate = today.toISOString().split('T')[0];
+  document.getElementById('date-picker').value = formattedDate; // Set date picker to today
+  document.getElementById('today-date').innerText = `Today (${today.toLocaleDateString('en-GB', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric'
-  }).split('/').join('-');
-  document.getElementById('today-date').innerText = `Today (${formattedDate})`;
+  }).split('/').join('-')})`;
 }
 
 // Check session on page load and update UI

@@ -4,9 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Count Your Reps</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
-    <!-- Prevents favicon 404 error -->
   </head>
   <body>
     <div class="container">
@@ -16,12 +15,13 @@
       </header>
 
       <div id="login">
-        <button onclick="signInWithGoogle()">Sign In with Google</button>
+        <button onclick="signInWithGoogle()">Login with Google</button>
       </div>
 
-      <div id="repsSection">
+      <div id="repsSection" style="display: none">
         <div class="today">
-          <p id="today-date">Today (DD-MM-YYYY)</p>
+          <span id="today-date"></span>
+          <input type="date" id="date-picker" onchange="loadRepsForDate()" />
         </div>
 
         <div class="reps">
@@ -29,30 +29,29 @@
             <h2>Push Ups</h2>
             <p id="pushups">0 Reps</p>
             <input type="number" id="pushups-input" placeholder="Enter Reps" />
-            <button onclick="updateReps('pushups')">Save</button>
+            <button id="pushups-save" onclick="updateReps('pushups')">
+              Save
+            </button>
           </div>
-
           <div class="card">
             <h2>Squats</h2>
             <p id="squats">0 Reps</p>
             <input type="number" id="squats-input" placeholder="Enter Reps" />
-            <button onclick="updateReps('squats')">Save</button>
+            <button id="squats-save" onclick="updateReps('squats')">
+              Save
+            </button>
           </div>
-
           <div class="card">
             <h2>SitUps</h2>
             <p id="situps">0 Reps</p>
             <input type="number" id="situps-input" placeholder="Enter Reps" />
-            <button onclick="updateReps('situps')">Save</button>
+            <button id="situps-save" onclick="updateReps('situps')">
+              Save
+            </button>
           </div>
         </div>
       </div>
     </div>
-
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"
-    ></script>
     <script src="script.js"></script>
   </body>
 </html>
