@@ -3,9 +3,8 @@ let supabase = null;
 let selectedDate = new Date().toISOString().split('T')[0]; // Track the currently selected date
 
 function initializeSupabase() {
-  const supabaseUrl = 'https://doqdmloolofjntckomar.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvcWRtbG9vbG9mam50Y2tvbWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4NTkxMTUsImV4cCI6MjA2MTQzNTExNX0.UWjotozpwacn2u_OKvzSAGLkKYq0q7eyJPGEFq8Ih8s';
-
+  const supabaseUrl = process.env.SUPABASE_URL; // Placeholder for env variable
+  const supabaseKey = process.env.SUPABASE_KEY; // Placeholder for env variable
   if (window.supabase && typeof window.supabase.createClient === 'function') {
     supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     console.log('Supabase initialized successfully');
