@@ -36,7 +36,6 @@ async function signInWithGoogle() {
       alert('Login failed: ' + error.message);
     } else {
       console.log('Login initiated:', data);
-      // Update UI after successful login
       const { data: userData, error: userError } = await supabase.auth.getUser();
       if (userError || !userData?.user) return;
 
@@ -44,7 +43,6 @@ async function signInWithGoogle() {
       document.getElementById('login').style.display = 'none';
       document.getElementById('repsSection').style.display = 'block';
       loadReps();
-      // Set profile picture
       if (user.user_metadata && user.user_metadata.avatar_url) {
         document.querySelector('.profile-icon').style.backgroundImage = `url(${user.user_metadata.avatar_url})`;
         document.querySelector('.profile-icon').style.backgroundSize = 'cover';
@@ -80,11 +78,13 @@ async function updateReps(type) {
   const today = new Date().toISOString().split('T')[0];
   const { data, error } = await supabase
     .from('reps')
-    .upsert([
-      { user_id: user.id, date: today, pushups: parseInt(pushups), squats: parseInt(squats), situps: parseInt(situps) }
-    ]);
+    .upsert(
+      { user_id: user.id, date: today, pushups: parseInt(pushups), squats: parseInt(squats), situps: parseInt(situps) },
+      { onConflict: ['user_id', 'date'] } // Updates existing row or inserts new with 0s if none exists
+    );
   if (error) console.error('Error saving:', error);
   else console.log('Saved:', data);
+  loadReps(); // Refresh display after saving
 }
 
 async function loadReps() {
@@ -94,32 +94,40 @@ async function loadReps() {
   if (userError || !userData?.user) return;
 
   const user = userData.user;
+  const today = new Date().toISOString().split('T')[0];
   const { data, error } = await supabase
     .from('reps')
     .select('*')
     .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
-    .limit(1);
+    .eq('date', today)
+    .maybeSingle(); // Use maybeSingle to handle cases where no row exists
 
   if (error) {
     console.error('Error loading:', error);
     return;
   }
 
-  if (data && data.length > 0) {
-    const latestEntry = data[0];
-    document.getElementById('pushups').innerText = latestEntry.pushups + " Reps";
-    document.getElementById('squats').innerText = latestEntry.squats + " Reps";
-    document.getElementById('situps').innerText = latestEntry.situps + " Reps";
-    // Update the date display with the latest entry's date
-    document.getElementById('today-date').innerText = `Last Updated (${new Date(latestEntry.date).toLocaleDateString('en-GB', {
+  if (data) {
+    document.getElementById('pushups').innerText = data.pushups + " Reps";
+    document.getElementById('squats').innerText = data.squats + " Reps";
+    document.getElementById('situps').innerText = data.situps + " Reps";
+    document.getElementById('today-date').innerText = `Last Updated (${new Date(today).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    }).split('/').join('-')})`;
+  } else {
+    // If no data exists for today, set to 0 Reps
+    document.getElementById('pushups').innerText = "0 Reps";
+    document.getElementById('squats').innerText = "0 Reps";
+    document.getElementById('situps').innerText = "0 Reps";
+    document.getElementById('today-date').innerText = `Today (${new Date(today).toLocaleDateString('en-GB', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
     }).split('/').join('-')})`;
   }
 
-  // Set profile picture on page load
   if (user.user_metadata && user.user_metadata.avatar_url) {
     document.querySelector('.profile-icon').style.backgroundImage = `url(${user.user_metadata.avatar_url})`;
     document.querySelector('.profile-icon').style.backgroundSize = 'cover';
