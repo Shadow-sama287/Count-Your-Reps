@@ -24,7 +24,6 @@ function initializeSupabase() {
 // Initialize Supabase when the page loads
 document.addEventListener('DOMContentLoaded', initializeSupabase);
 
-// Existing functions remain unchanged
 async function signInWithGoogle() {
   if (!supabase) {
     console.error('Supabase client not initialized');
@@ -61,6 +60,8 @@ async function signInWithGoogle() {
     alert('An unexpected error occurred during login. Please try again.');
   }
 }
+
+// Include the rest of your existing functions (updateReps, loadRepsForDate, etc.) here
 
 async function updateReps(type) {
   if (!supabase) {
