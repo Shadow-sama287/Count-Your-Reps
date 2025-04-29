@@ -2,15 +2,25 @@
 let supabase = null;
 let selectedDate = new Date().toISOString().split('T')[0]; // Track the currently selected date
 
-function initializeSupabase() {
-  const supabaseUrl = process.env.SUPABASE_URL; // Placeholder for env variable
-  const supabaseKey = process.env.SUPABASE_KEY; // Placeholder for env variable
-  if (window.supabase && typeof window.supabase.createClient === 'function') {
-    supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-    console.log('Supabase initialized successfully');
-  } else {
-    console.error('Supabase library not loaded or incompatible');
-    alert('Error: Supabase library failed to load. Please refresh the page.');
+async function initializeSupabase() {
+  try {
+    const response = await fetch('/api/supabase');
+    if (!response.ok) {
+      throw new Error('Failed to initialize Supabase');
+    }
+    const data = await response.json();
+    console.log(data.message); // Should log "Supabase initialized"
+
+    // For now, we'll reinitialize Supabase on the client side
+    // This will be updated later to avoid exposing credentials
+    const { createClient } = window.supabase;
+    const supabaseUrl = 'https://doqdmloolofjntckomar.supabase.co'; // Temporary
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvcWRtbG9vbG9mam50Y2tvbWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4NTkxMTUsImV4cCI6MjA2MTQzNTExNX0.UWjotozpwacn2u_OKvzSAGLkKYq0q7eyJPGEFq8Ih8s'; // Temporary
+    supabase = createClient(supabaseUrl, supabaseKey);
+    console.log('Supabase initialized successfully on client');
+  } catch (error) {
+    console.error('Error initializing Supabase:', error);
+    alert('Error: Supabase initialization failed. Please refresh the page.');
   }
 }
 
